@@ -1,7 +1,22 @@
 import './bootstrap';
 
-import { createApp } from 'vue';
-import app from './components/app.vue';
-import router from './router/index.js';
+import { createApp, markRaw } from 'vue';
+import { createPinia } from 'pinia';
+import { createPersistedState } from 'pinia-plugin-persistedstate';
+import App from './components/app.vue';
+import router from './router';
 
-createApp(app).use(router).mount('#app');
+
+
+const pinia = createPinia();
+pinia.use(({ store }) => {
+    store.router = markRaw(router);
+});
+
+pinia.use(createPersistedState());
+
+const app = createApp(App);
+
+app.use(pinia);
+app.use(router);
+app.mount('#app');
