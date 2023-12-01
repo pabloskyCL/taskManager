@@ -1,13 +1,24 @@
 <script setup>
+import axios from 'axios';
 import { useAuthStore } from '../stores/auth';
-const authStore = useAuthStore();
+import { onMounted, ref } from 'vue';
 
+const authStore = useAuthStore();
+const tasks = ref([]);
 
 const handleLogout = async () => {
 
     await authStore.logout();
 
 }
+
+onMounted(async () => {
+    const response = await axios.get('/api/tasks',{
+        withCredentials: true
+    });
+
+    console.log(response.data);
+})
 
 
 </script>
