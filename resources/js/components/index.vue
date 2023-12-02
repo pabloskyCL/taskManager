@@ -1,10 +1,8 @@
 <script setup>
 import axios from 'axios';
-import { useAuthStore } from '../stores/auth';
 import { onMounted, reactive } from 'vue';
 import modal from './modal.vue';
 
-const authStore = useAuthStore();
 let state = reactive({
     showModal: false,
     showEditModal: false,

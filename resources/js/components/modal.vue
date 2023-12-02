@@ -1,5 +1,3 @@
-
-
 <script setup>
 import { onMounted, reactive } from 'vue';
 
