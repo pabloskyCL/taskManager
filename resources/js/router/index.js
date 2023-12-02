@@ -19,6 +19,9 @@ const routes = [
         component: Register
     },
     {
+        path: '/taskEdit',
+    },
+    {
         path: '/:pathMatch(.*)*',
         component: notFound
     }
