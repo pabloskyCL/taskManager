@@ -1,5 +1,4 @@
 <script setup>
-import axios from "axios";
 import { reactive } from "vue";
 import { useAuthStore } from '../stores/auth';
 
