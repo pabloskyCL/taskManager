@@ -2,38 +2,20 @@
 import axios from 'axios';
 import { onMounted, reactive } from 'vue';
 import modal from './modal.vue';
+import onTask from '../hooks/onTask';
 
-let state = reactive({
-    showModal: false,
-    showEditModal: false,
-    selectedTask: {},
-    tasks: []
-});
+const {state,
+    getTasks,
+    deleteTask,
+} = onTask();
 
 onMounted(async () => {
     state.tasks = await getTasks();
 })
 
-const getTasks = async () => {
-    const response = await axios.get('/api/tasks', {
-        withCredentials: true
-    });
-
-    return response.data;
-}
-
 const getStatus = (status) => {
 
     return status ? 'completada' : 'pendiente';
-}
-
-const deleteTask = async (task) => {
-    const response = await axios.delete('/api/task', {
-        data: { taskId: task },
-        withCredentials: true
-    });
-
-    state.tasks = await getTasks();
 }
 
 const createTask = async (form) => {
