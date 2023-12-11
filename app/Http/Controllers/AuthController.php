@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\WelcomeMailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,6 +53,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ]);
+
+        $user->notify(new WelcomeMailNotification());
 
         return response()->json([
             'message' => 'User created successfully',
