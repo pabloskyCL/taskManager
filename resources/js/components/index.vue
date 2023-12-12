@@ -4,9 +4,11 @@ import { onMounted, reactive } from 'vue';
 import modal from './modal.vue';
 import onTask from '../hooks/onTask';
 
-const {state,
+const { state,
     getTasks,
     deleteTask,
+    createTask,
+    editTask
 } = onTask();
 
 onMounted(async () => {
@@ -16,17 +18,6 @@ onMounted(async () => {
 const getStatus = (status) => {
 
     return status ? 'completada' : 'pendiente';
-}
-
-const createTask = async (form) => {
-    const response = await axios.post('/api/task', form, { withCredentials: true });
-    state.tasks = await getTasks();
-    toggleModal()
-}
-const editTask = async (form) => {
-    const response = await axios.put('/api/task', form, { withCredentials: true });
-    state.tasks = await getTasks();
-    toggleEditTaskModal();
 }
 
 const toggleModal = () => {
@@ -89,8 +80,7 @@ const toggleEditTaskModal = (task = {}) => {
             </div>
         </div>
     </div>
-    <modal v-if="state.showModal" :get-task="getTasks" :task-handler="createTask" :show-modal="toggleModal"
-        :title="'Crear tarea'" />
-    <modal v-if="state.showEditModal" :get-task="getTasks" :task-handler="editTask" :show-modal="toggleEditTaskModal"
+    <modal v-if="state.showModal" :task-handler="createTask" @toggleModal="toggleModal" :title="'Crear tarea'" />
+    <modal v-if="state.showEditModal" :task-handler="editTask" @toggleModal="toggleEditTaskModal"
         :task-data="state.selectedTask" :title="'Editar tarea'" />
 </template>

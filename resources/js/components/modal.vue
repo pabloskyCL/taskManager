@@ -1,12 +1,14 @@
 <script setup>
 import { onMounted, reactive } from 'vue';
 
+
 const props = defineProps({
     taskHandler: Function,
-    showModal: Function,
     taskData: { type: Object, default: null },
     title: String
 });
+
+const emit = defineEmits(['toggleModal'])
 
 onMounted(() => {
     if (props.taskData) {
@@ -16,6 +18,12 @@ onMounted(() => {
         form.taskId = props.taskData.id;
     }
 });
+
+const handleSubmit = async (form) => {
+    props.taskHandler(form).then((res) => {
+        emit('toggleModal');
+    });
+}
 
 const form = reactive({
     name: "",
@@ -32,7 +40,7 @@ const form = reactive({
         <div class="absolute bg-black opacity-80 inset-0 z-0"></div>
         <div class="w-full  max-w-lg p-5 relative mx-auto my-auto rounded-xl bg-white ">
             <!--content-->
-            <form @submit.prevent="props.taskHandler(form)">
+            <form @submit.prevent="handleSubmit(form)">
                 <div class="bg-grey-lighter flex flex-col">
                     <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                         <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
@@ -49,9 +57,8 @@ const form = reactive({
                             </div>
                             <div>
                                 <button type="submit"
-                                    class="w-full text-center py-3 rounded bg-green-600 text-white hover:bg-green-800 focus:outline-none my-1">Crear
-                                    tarea</button>
-                                <button @click="props.showModal()"
+                                    class="w-full text-center py-3 rounded bg-green-600 text-white hover:bg-green-800 focus:outline-none my-1">Guardar</button>
+                                <button @click="emit('toggleModal')"
                                     class="w-full text-center py-3 rounded bg-red-600 text-white hover:bg-red-800 focus:outline-none my-1">Cancelar</button>
                             </div>
                         </div>
